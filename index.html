@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maestros de los Grupos Representativos 2026-2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: inicio (resumen + tarjetas de maestros + Bienestar) y una vista de perfil por maestro, enrutada por #id */
+:root{
+  --navy:#00205B; --blue:#00387B; --gold:#F5C518; --amber:#B45309; --red:#B91C1C;
+  --bg:#F7F9FC; --surface:#FFFFFF; --ink:#13213F; --muted:#5B6781; --line:#E4E9F2; --soft:#EEF2F8;
+  --display:"Playfair Display", Georgia, serif;
+  --body:"DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3{text-wrap:balance;margin:0;line-height:1.2}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:8px}
+
+/* Barra superior */
+.top{background:var(--navy);color:#fff;position:sticky;top:0;z-index:5}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:56px;font-size:.88rem}
+.top b{font-weight:700}
+.top nav{display:flex;gap:4px}
+.top nav a{color:#C9D6EE;text-decoration:none;font-weight:600;padding:6px 12px;border-radius:999px}
+.top nav a:hover{color:#fff;background:rgba(255,255,255,.1)}
+
+/* Encabezado */
+.hero{padding:48px 0 8px}
+.kicker{font-size:.85rem;font-weight:600;color:var(--blue)}
+.hero h1{font-family:var(--display);font-size:clamp(2rem,4.5vw,2.8rem);color:var(--navy);margin:.25em 0 .35em}
+.hero p{margin:0;color:var(--muted);max-width:58ch;font-size:1.05rem}
+.stats{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 20px;flex:1 1 200px}
+.stat .v{font-size:2rem;font-weight:700;color:var(--navy);line-height:1}
+.stat .v small{font-size:.95rem;font-weight:500;color:var(--muted)}
+.stat .l{font-size:.9rem;color:var(--muted);margin-top:6px}
+
+/* Bloques */
+.block{margin-top:56px;scroll-margin-top:72px}
+.block > h2,.bar h2{font-size:1.35rem;font-weight:700;color:var(--ink)}
+.block > h2{margin-bottom:6px}
+.lead{margin:0 0 18px;color:var(--muted);max-width:62ch}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.sum{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px}
+.sum h3{font-size:1rem;font-weight:700;display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.dot{width:10px;height:10px;border-radius:50%;flex:none;display:inline-block}
+.d-pos{background:var(--blue)} .d-opp{background:var(--amber)} .d-inf{background:#94A3B8} .d-crit{background:var(--red)}
+.sum ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.sum li{font-size:.93rem;color:var(--muted);padding-left:14px;position:relative}
+.sum li::before{content:"";position:absolute;left:0;top:.7em;width:5px;height:5px;border-radius:50%;background:var(--line)}
+.sum li b{color:var(--ink);font-weight:600}
+
+/* Filtros y tarjetas */
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.tabs{display:flex;gap:6px;background:var(--soft);padding:4px;border-radius:999px}
+.tab{border:0;background:none;padding:6px 14px;border-radius:999px;font-size:.88rem;font-weight:600;color:var(--muted);cursor:pointer;transition:background .2s,color .2s}
+.tab[aria-pressed="true"]{background:var(--surface);color:var(--navy);box-shadow:0 1px 3px rgba(0,32,91,.12)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.card{all:unset;box-sizing:border-box;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:14px;transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease}
+.card:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(0,32,91,.09);border-color:#C9D4E6}
+.card:hover .c-more{gap:10px}
+.card:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.c-top{display:flex;align-items:center;gap:12px}
+.av{flex:none;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#fff;background:var(--blue);font-size:.95rem}
+.c-name{font-weight:700;font-size:1.02rem;line-height:1.25}
+.c-group{font-size:.85rem;color:var(--muted);line-height:1.3}
+.c-score{display:flex;align-items:baseline;gap:6px}
+.c-score .v{font-size:1.6rem;font-weight:700;color:var(--navy);line-height:1}
+.c-score .l{font-size:.8rem;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:.78rem;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--soft);color:var(--blue)}
+.c-more{font-size:.85rem;font-weight:600;color:var(--blue);margin-top:auto;display:flex;gap:6px;transition:gap .2s}
+
+/* Bienestar */
+.two{display:grid;grid-template-columns:1.4fr 1fr;gap:14px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px}
+.panel h3{font-size:1rem;font-weight:700;margin-bottom:4px}
+.panel .sub{font-size:.85rem;color:var(--muted);margin:0 0 14px}
+.srow{display:grid;grid-template-columns:minmax(120px,200px) 1fr 52px;gap:12px;align-items:center;margin:12px 0;font-size:.9rem}
+.stack{display:flex;height:12px;border-radius:6px;overflow:hidden;background:var(--soft)}
+.stack span{display:block;height:100%;width:0;transition:width .9s cubic-bezier(.2,.7,.2,1)}
+.srow .pct{text-align:right;font-weight:700}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin-top:12px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.c-exc{background:var(--navy)} .c-bue{background:#6B93D1} .c-reg{background:#E8A54F} .c-mal{background:#C2410C}
+.hrow{display:grid;grid-template-columns:110px 1fr 44px;gap:10px;align-items:center;margin:11px 0;font-size:.9rem}
+.htrack{height:10px;background:var(--soft);border-radius:6px;overflow:hidden}
+.htrack span{display:block;height:100%;width:0;background:var(--blue);border-radius:6px;transition:width .9s cubic-bezier(.2,.7,.2,1)}
+.hrow .pct{text-align:right;font-weight:700}
+.concl{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+.cc{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:8px}
+.tag{align-self:flex-start;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:999px}
+.tag.pos{background:rgba(0,56,123,.1);color:var(--blue)}
+.tag.crit{background:rgba(185,28,28,.1);color:var(--red)}
+.tag.opp{background:rgba(180,83,9,.12);color:var(--amber)}
+.cc h3{font-size:1.02rem;font-weight:700}
+.cc p{margin:0;font-size:.92rem;color:var(--muted)}
+.cc .metric{font-size:.85rem;font-weight:700;color:var(--ink)}
+.cc .q{margin-top:auto;font-size:.9rem;color:var(--ink);background:var(--bg);border-radius:10px;padding:10px 12px;border-left:3px solid var(--gold)}
+.wish{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.wish span{background:var(--soft);color:var(--navy);border-radius:999px;padding:6px 12px;font-weight:600;font-size:.88rem}
+.wish span small{color:var(--muted);font-weight:500;margin-left:4px}
+.note{font-size:.85rem;color:var(--muted);margin:12px 0 0}
+
+/* Perfil */
+#profile[hidden],#home[hidden]{display:none}
+.back{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-weight:600;color:var(--blue);font-size:.95rem;margin:32px 0 18px}
+.back:hover{text-decoration:underline}
+.p-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.p-head{padding:28px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.p-head .av{width:72px;height:72px;font-size:1.4rem}
+.p-id{flex:1 1 240px}
+.p-id .area{font-size:.8rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.p-id h1{font-family:var(--display);font-size:clamp(1.7rem,3.5vw,2.2rem);color:var(--navy);margin:.1em 0}
+.p-id .grp{color:var(--muted);font-size:1rem}
+.p-scores{display:flex;gap:10px;flex-wrap:wrap}
+.ps{background:var(--soft);border-radius:14px;padding:12px 16px;min-width:130px}
+.ps .v{font-size:1.7rem;font-weight:700;color:var(--navy);line-height:1}
+.ps .l{font-size:.8rem;color:var(--muted);margin-top:4px;line-height:1.3}
+.ps.main{background:var(--navy)}
+.ps.main .v{color:#fff} .ps.main .l{color:#C9D6EE}
+.p-body{padding:8px 28px 28px;display:grid;grid-template-columns:1.15fr 1fr;gap:32px}
+.p-sec{padding-top:22px}
+.p-sec h2{font-size:1.05rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.quote{margin:0 0 10px;padding:14px 16px 14px 40px;background:var(--bg);border-radius:12px;font-size:.97rem;position:relative}
+.quote::before{content:"“";position:absolute;left:14px;top:4px;font-family:var(--display);font-size:2rem;color:var(--gold);line-height:1.2}
+.quote.grow::before{color:var(--amber)}
+.p-sec p{margin:0 0 12px}
+.asks{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.asks li{font-size:.93rem;color:var(--muted);padding-left:16px;position:relative}
+.asks li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:2px;background:#94A3B8}
+.rows{display:flex;flex-direction:column;gap:10px}
+.row{display:grid;grid-template-columns:1fr 90px 38px;align-items:center;gap:12px;font-size:.92rem}
+.row .lab{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.flag{font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:999px}
+.flag.top{background:rgba(245,197,24,.25);color:#7A5B00}
+.flag.low{background:rgba(180,83,9,.12);color:var(--amber)}
+.mini{height:6px;background:var(--soft);border-radius:4px;position:relative;overflow:hidden}
+.mini span{position:absolute;inset:0 auto 0 0;width:0;background:var(--blue);border-radius:4px;transition:width .9s cubic-bezier(.2,.7,.2,1)}
+.mini span.low{background:var(--amber)}
+.mini span.top{background:var(--gold)}
+.row .val{text-align:right;font-weight:700}
+.scale{font-size:.78rem;color:var(--muted);margin-top:10px}
+.pn{display:flex;justify-content:space-between;gap:12px;margin:18px 0 0}
+.pn button{all:unset;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:.9rem;font-weight:600;color:var(--blue);max-width:48%}
+.pn button:hover{border-color:#C9D4E6}
+.pn button span{display:block;font-size:.75rem;font-weight:500;color:var(--muted)}
+.pn .next{text-align:right;margin-left:auto}
+
+/* Comité */
+.com{margin-top:18px;background:var(--surface);border:1px solid var(--line);border-top:5px solid var(--navy);border-radius:20px;padding:26px 28px}
+.com-h{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.com-h h2{font-family:var(--display);font-size:1.5rem;color:var(--navy)}
+.com-h p{margin:6px 0 0;color:var(--muted);max-width:60ch}
+.badge{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--navy);color:#fff;border-radius:999px;padding:5px 12px;white-space:nowrap}
+.ask{margin:18px 0 6px;background:rgba(245,197,24,.16);border:1px solid rgba(245,197,24,.55);border-radius:12px;padding:12px 16px;font-size:.95rem}
+.ask b{color:var(--navy)}
+.pts{display:flex;flex-direction:column;gap:12px;margin-top:18px}
+.pt{display:grid;grid-template-columns:40px 1fr;gap:12px;border:1px solid var(--line);border-radius:14px;padding:16px}
+.obs{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.obs li{position:relative;padding-left:16px;font-size:.94rem}
+.obs li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:2px;background:var(--navy)}
+.sub-p{margin:6px 0 12px;color:var(--muted);font-size:.9rem}
+.negs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.neg{border:1px solid rgba(180,83,9,.3);background:rgba(180,83,9,.05);border-radius:14px;padding:14px 16px}
+.neg .nm{font-size:.85rem;font-weight:600}
+.neg .nv{font-size:1.8rem;font-weight:700;color:var(--amber);line-height:1.1;margin:4px 0}
+.neg .nr{font-size:.85rem;font-weight:600;color:var(--ink)}
+.neg .ng{font-size:.78rem;color:var(--muted)}
+.nqs{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.pt .n{width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:700;font-size:.9rem}
+.pt h3{font-size:1rem;font-weight:700;margin-bottom:6px}
+.pt .lbl{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.pt p{margin:0;font-size:.92rem}
+.ev{background:var(--bg);border-radius:10px;padding:12px}
+.ev .m{display:inline-block;font-weight:700;color:var(--navy);margin-bottom:4px}
+.ev .qq{font-size:.88rem;color:var(--muted);font-style:italic;margin-top:6px}
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.opt{border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.opt h4{margin:0;font-size:.98rem}
+.opt p{margin:0;font-size:.88rem;color:var(--muted)}
+.opt .pr{font-size:.85rem}
+.opt .pr b{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sub-h{font-size:1.05rem;font-weight:700;margin-top:26px}
+
+footer{margin:56px 0 32px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+/* Animación */
+@media (prefers-reduced-motion:no-preference){
+  .rise{animation:rise .6s cubic-bezier(.2,.7,.2,1) both}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .fadein{animation:fadein .45s ease both}
+  @keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .card,.stack span,.htrack span,.mini span{transition:none}
+  .card:hover{transform:none}
+}
+
+@media (max-width:860px){
+  .summary,.concl,.opts,.nqs{grid-template-columns:1fr}
+  .negs{grid-template-columns:1fr 1fr}
+  .two{grid-template-columns:1fr}
+  .p-body{grid-template-columns:1fr;gap:0}
+  .pt{grid-template-columns:36px 1fr}
+  .pt .ev{grid-column:2}
+}
+@media (max-width:560px){
+  .top .brand-sub{display:none}
+  .p-head,.p-body,.com{padding-left:18px;padding-right:18px}
+  .row{grid-template-columns:1fr 60px 34px}
+  .srow{grid-template-columns:110px 1fr 44px}
+  .tabs{width:100%;justify-content:space-between}
+}
+</style>
+</head>
+<body>
+
+<div class="top"><div class="wrap"><b>Universidad de La Sabana</b><nav aria-label="Secciones"><a href="#perfiles">Maestros</a><a href="#bienestar">Bienestar</a></nav></div></div>
+
+<main class="wrap">
+  <div id="home">
+    <header class="hero">
+      <div class="kicker rise">Encuesta de satisfacción · Grupos Representativos 2026-2</div>
+      <h1 class="rise" style="animation-delay:.08s">Así ven los estudiantes a sus maestros</h1>
+      <p class="rise" style="animation-delay:.16s">Lo que más valoran de cada maestro, lo que puede seguir creciendo y lo que opinan del acompañamiento de Bienestar.</p>
+      <div class="stats">
+        <div class="stat rise" style="animation-delay:.24s"><div class="v num"><span data-count="4.84" data-dec="2">4,84</span> <small>/ 5</small></div><div class="l">Satisfacción con su maestro</div></div>
+        <div class="stat rise" style="animation-delay:.32s"><div class="v num"><span data-count="86" data-dec="0">86</span> <small>%</small></div><div class="l">le dio la calificación máxima</div></div>
+        <div class="stat rise" style="animation-delay:.40s"><div class="v num"><span data-count="4.77" data-dec="2">4,77</span> <small>/ 5</small></div><div class="l">Satisfacción con la experiencia en el grupo</div></div>
+      </div>
+    </header>
+
+    <section class="block" aria-labelledby="sum-h">
+      <h2 id="sum-h">En resumen</h2>
+      <p class="lead">Lo que se repite en los comentarios de todos los grupos.</p>
+      <div class="summary">
+        <div class="sum rise" style="animation-delay:.45s">
+          <h3><span class="dot d-pos"></span>Lo que más valoran</h3>
+          <ul>
+            <li><b>Paciencia y atención a cada uno.</b> Sienten que su maestro los ve de forma individual.</li>
+            <li><b>Dominio técnico.</b> Conocimientos es el criterio mejor calificado (4,86).</li>
+            <li><b>Un espacio seguro.</b> Comunidad, pertenencia y un respiro del estrés académico.</li>
+          </ul>
+        </div>
+        <div class="sum rise" style="animation-delay:.52s">
+          <h3><span class="dot d-opp"></span>Lo que puede mejorar</h3>
+          <ul>
+            <li><b>Puntualidad.</b> Es el criterio más bajo del conjunto (4,48).</li>
+            <li><b>Organización del ensayo.</b> Planear cada sesión y anticipar cambios.</li>
+            <li><b>Más exigencia.</b> Varios grupos la piden por iniciativa propia.</li>
+          </ul>
+        </div>
+        <div class="sum rise" style="animation-delay:.59s">
+          <h3><span class="dot d-inf"></span>Lo que piden a Bienestar</h3>
+          <ul>
+            <li><b>Dotación.</b> Uniformes y distintivos que no han llegado.</li>
+            <li><b>Salones de danza</b> que no se inunden y pisos seguros.</li>
+            <li><b>Instrumentos</b> renovados y con mantenimiento.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="perfiles" aria-labelledby="dir-h">
+      <div class="bar">
+        <h2 id="dir-h">Conoce cada perfil</h2>
+        <div class="tabs" role="group" aria-label="Filtrar por área">
+          <button class="tab" type="button" data-f="Todos" aria-pressed="true">Todos</button>
+          <button class="tab" type="button" data-f="Danza" aria-pressed="false">Danza</button>
+          <button class="tab" type="button" data-f="Música" aria-pressed="false">Música</button>
+          <button class="tab" type="button" data-f="Teatro" aria-pressed="false">Teatro</button>
+        </div>
+      </div>
+      <div class="grid" id="grid"></div>
+    </section>
+
+    <section class="block" id="bienestar" aria-labelledby="bie-h">
+      <h2 id="bie-h">Lo que dicen de Bienestar</h2>
+      <p class="lead">Calificaciones sobre recursos y acompañamiento, y lo que los estudiantes le dicen a la Dirección de Bienestar y Experiencia del Estudiante.</p>
+      <div class="two">
+        <div class="panel">
+          <h3>Recursos y acompañamiento</h3>
+          <p class="sub">Distribución de las calificaciones. A la derecha, el porcentaje que respondió excelente o bueno.</p>
+          <div id="conds"></div>
+          <div class="legend"><span><i class="c-exc"></i>Excelente</span><span><i class="c-bue"></i>Bueno</span><span><i class="c-reg"></i>Regular</span><span><i class="c-mal"></i>Malo</span></div>
+        </div>
+        <div class="panel">
+          <h3>Dónde prefieren enterarse</h3>
+          <p class="sub">Canal preferido para conocer los eventos de Bienestar.</p>
+          <div id="canal"></div>
+          <p class="note">Instagram concentra más de la mitad de las preferencias; el grupo de WhatsApp es el segundo canal.</p>
+        </div>
+      </div>
+
+      <div class="concl">
+        <article class="cc">
+          <span class="tag pos">Fortaleza</span>
+          <h3>Acompañamiento cercano</h3>
+          <div class="metric">98 % califica bien el acompañamiento en salidas · 92 % la atención del equipo</div>
+          <p>Es lo mejor calificado. Agradecen la respuesta oportuna, la logística de los viajes y el apoyo para competir en el nivel nacional. La gestión de la coordinación de cultura se reconoce por nombre en varios comentarios.</p>
+          <div class="q">“Gracias por estar siempre pendientes; normalmente nos ayudan oportunamente y con tiempo.”</div>
+        </article>
+        <article class="cc">
+          <span class="tag crit">Prioridad</span>
+          <h3>Dotación de uniformes</h3>
+          <div class="metric">39 % la califica como regular o mala</div>
+          <p>Es el aspecto peor calificado. Hay uniformes y distintivos sin entregar, grupos que compitieron sin estar uniformados y esperas de varios semestres. También se pide un uniforme más completo para ensayar.</p>
+          <div class="q">“Durante los concursos regional y nacional de ASCUN no pudimos estar uniformados.”</div>
+        </article>
+        <article class="cc">
+          <span class="tag crit">Prioridad</span>
+          <h3>Salones seguros</h3>
+          <div class="metric">19 % califica las instalaciones como regulares o malas</div>
+          <p>Los salones de danza se inundan con la lluvia, hay filtraciones cerca de las tomas eléctricas, pisos resbalosos y casilleros dañados. Las tunas no tienen sala propia y el coro necesita más espacio.</p>
+          <div class="q">“Las fugas de agua en los tomacorrientes y el agua que entra al salón son un peligro para los estudiantes.”</div>
+        </article>
+        <article class="cc">
+          <span class="tag opp">Oportunidad</span>
+          <h3>Instrumentos con mantenimiento</h3>
+          <div class="metric">20 % califica los implementos como regulares o malos</div>
+          <p>Guitarras sin cuerdas o desafinadas, micrófonos, parches, platillos y el bajo. La Línea de tambores pide instrumentos propios para no cruzarse con otros grupos, y la OSUS, cuidado en los traslados.</p>
+          <div class="q">“Las guitarras de las salas de ensayo necesitan mantenimiento: suenan desafinadas y con el conector suelto.”</div>
+        </article>
+        <article class="cc">
+          <span class="tag opp">Oportunidad</span>
+          <h3>Comunicación y logística</h3>
+          <div class="metric">Avisos, respuestas y salidas</div>
+          <p>Piden avisar los eventos con más tiempo, mejorar la logística cuando la universidad es anfitriona, asegurar refrigerios y transporte en las salidas y agilizar las excusas académicas.</p>
+          <div class="q">“Más tiempo de aviso para eventos.”</div>
+        </article>
+        <article class="cc">
+          <span class="tag opp">Oportunidad</span>
+          <h3>Más escenario</h3>
+          <div class="metric">Presentaciones y competencias</div>
+          <p>Los grupos quieren más presentaciones presenciales, salir a otras universidades y más apoyo para que los grupos musicales lleguen a ASCUN y a festivales.</p>
+          <div class="q">“Me gustaría tener más visibilidad con los grupos de manera física y no solamente digital.”</div>
+        </article>
+      </div>
+
+      <div class="panel" style="margin-top:14px">
+        <h3>Grupos que les gustaría tener</h3>
+        <p class="sub">Temas artísticos más mencionados, con su número de menciones.</p>
+        <div class="wish">
+          <span>Danza contemporánea<small>8</small></span><span>Música andina<small>7</small></span><span>Jazz (danza y música)<small>7</small></span>
+          <span>Pintura y dibujo<small>7</small></span><span>Salsa como grupo propio<small>6</small></span><span>Ballet<small>5</small></span>
+          <span>A capella y técnica vocal<small>4</small></span><span>Manualidades y tejido<small>4</small></span><span>Tango y danza de salón<small>3</small></span>
+        </div>
+        <p class="note">También aparecen deportes (16 menciones), que corresponden a otra área. Una idea que vale la pena: “Tal vez no crear nuevos grupos, sino ampliar los que existen con semilleros”.</p>
+      </div>
+    </section>
+  </div>
+
+  <div id="profile" hidden></div>
+
+  <footer>
+    <span>Dirección de Bienestar y Experiencia del Estudiante · Jefatura de Desarrollo Cultural</span>
+    <span>Encuesta aplicada del 28 de octubre al 5 de noviembre de 2026</span>
+  </footer>
+</main>
+
+<!--COMITE-START-->
+<script>
+window.COMITE = {
+  gomez: {
+    title: "Renovación de contrato",
+    intro: "Situaciones identificadas por la coordinación de Desarrollo Cultural y resultados de la encuesta, para discutir la renovación del contrato de Alejandro Gómez como maestro de Génesis.",
+    ask: "Decidir si se renueva el contrato de Alejandro Gómez y, en ese caso, bajo qué condiciones.",
+    points: [
+      {t:"Carga horaria, puntualidad y registros", items:[
+        "Reducción de sus horas en un 50 % por carga laboral.",
+        "Esta reducción también ha ocasionado poca puntualidad.",
+        "No registra la asistencia ni realiza correctamente el registro de las horas."]},
+      {t:"Alineación con el PEI y seguimiento de normas", items:[
+        "Se percibe poca alineación con el PEI.",
+        "Caso de un estudiante sin permiso en ASCUN.",
+        "Falta de seguimiento de las normas en los horarios de ensayo y en ASCUN."]},
+      {t:"Participación institucional e integración", items:[
+        "Asiste solo a presentaciones relacionadas con danza urbana.",
+        "No participa en los eventos institucionales.",
+        "Poca integración del grupo con el resto de la comunidad cultural."]},
+      {t:"Relación con los estudiantes", items:[
+        "La relación con los estudiantes es más de amistad que de maestro."]},
+      {t:"Fortalezas y posible impacto de la decisión", items:[
+        "Es un gran bailarín y técnicamente muy bueno.",
+        "Ha traído grandes resultados al grupo.",
+        "El grupo es muy apegado a él: cualquier decisión puede tener un fuerte impacto en los integrantes."]}
+    ],
+    neg: [
+      {m:"Puntualidad", v:"3,61", r:"La más baja de toda la encuesta", g:"Promedio general: 4,48"},
+      {m:"Metodología de ensayo", v:"4,35", r:"La más baja entre los maestros", g:"Promedio general: 4,67"},
+      {m:"Conocimientos", v:"4,57", r:"La más baja entre los maestros", g:"Promedio general: 4,86"},
+      {m:"Comunicación asertiva", v:"4,43", r:"La segunda más baja", g:"Promedio general: 4,73"},
+      {m:"Satisfacción con el maestro", v:"4,74", r:"La segunda más baja", g:"Promedio general: 4,84"},
+      {m:"Liderazgo", v:"4,61", r:"La tercera más baja", g:"Promedio general: 4,74"}
+    ],
+    negNote: "Cerca de siete comentarios mencionan la puntualidad o el manejo del tiempo. Otros piden más organización, mejor comunicación y trato igualitario.",
+    negQuotes: [
+      "Mejorar un poco la puntualidad de inicio y finalización de las clases y la organización.",
+      "Debe asistir a las clases.",
+      "Puntualidad y mejorar la planeación para seguir el cronograma.",
+      "Mejorar la comunicación y anticiparse más a las cosas. Leer reglamentos y hacer cambios con tiempo.",
+      "Organizar mejor sus ideas y ser igualitario.",
+      "La manera en que tal vez dice las cosas."
+    ],
+    options: [
+      {t:"Renovar con compromisos", d:"Renovar con un plan de mejora y metas medibles: puntualidad, registro de asistencia y horas, cumplimiento de normas y del Reglamento 41, y participación en los eventos institucionales, con seguimiento mensual.",
+       pro:"Mantiene la cohesión y los resultados del grupo.", risk:"Si la carga laboral no cambia, los problemas de tiempo y registro pueden repetirse."},
+      {t:"Transición acompañada", d:"Renovar por un periodo definido mientras se prepara un relevo o una codirección, con empalme frente al grupo.",
+       pro:"Reduce el impacto de un cambio en un grupo muy apegado.", risk:"Exige definir con claridad roles y tiempos."},
+      {t:"No renovar con plan de cierre", d:"Cerrar el ciclo con un relevo de buen nivel técnico ya identificado y acompañamiento de Bienestar al grupo durante el cambio.",
+       pro:"Permite alinear el grupo con el PEI y con la comunidad cultural desde el inicio.", risk:"Puede afectar la permanencia y la motivación de los integrantes."}
+    ]
+  }
+};
+</script>
+<!--COMITE-END-->
+
+<script>
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const CRIT = [
+  ["puntualidad","Puntualidad"],["comunicacion","Comunicación asertiva"],["relaciones","Relaciones interpersonales"],
+  ["liderazgo","Liderazgo"],["exigencia","Exigencia"],["conocimientos","Conocimientos"],
+  ["metodologia","Metodología de ensayo"],["servicio","Actitud de servicio"]
+];
+const CONDS = [
+  ["Acompañamiento en salidas",{e:90,b:29,r:3,m:0}],
+  ["Atención del equipo de Bienestar",{e:64,b:48,r:9,m:1}],
+  ["Instalaciones y salas de ensayo",{e:51,b:48,r:19,m:4}],
+  ["Implementos e instrumentos",{e:39,b:58,r:23,m:2}],
+  ["Dotación (uniformes y distintivos)",{e:32,b:42,r:27,m:21}]
+];
+const CANAL = [["Instagram",69],["WhatsApp",29],["Correo",22],["Facebook",2]];
+
+const T = [
+  {id:"gomez",area:"Danza",name:"Alejandro Gómez",group:"Génesis · Danza Urbana",color:"#00387B",
+   s:{puntualidad:3.61,comunicacion:4.43,relaciones:4.78,liderazgo:4.61,exigencia:4.70,conocimientos:4.57,metodologia:4.35,servicio:4.83,satExp:4.78,satMaestro:4.74},
+   tags:["Carismático","Cercano","Comprometido","Espacio seguro"],
+   quotes:["Exigencia y carisma al mismo tiempo, es muy buen líder del grupo.",
+           "Busca adaptarse al proceso de cada integrante, nos da alternativas para mejorar y está pendiente de nuestro bienestar."],
+   grow:"Puntualidad al iniciar y terminar las clases, y una planeación más clara de cada ensayo y del cronograma.",
+   growQuote:"Decir desde un inicio qué es lo que se espera lograr en ese entreno y, si no llegamos, programar ensayos adicionales.",
+   asks:["Bailarines invitados de danza urbana para profundizar en otros estilos","Más tiempo de clase","Un salón más amplio y sin goteras ni piso resbaloso cuando llueve"]},
+
+  {id:"osorio",area:"Danza",name:"Susana Osorio",group:"Saoko · Salsa y Bachata",color:"#1D4E9E",
+   s:{puntualidad:4.41,comunicacion:4.94,relaciones:5.00,liderazgo:4.94,exigencia:5.00,conocimientos:4.88,metodologia:4.94,servicio:5.00,satExp:4.82,satMaestro:4.88},
+   tags:["Calidad humana","Exigente","Da la milla extra","Atención individual"],
+   quotes:["Ve a cada uno individualmente para ayudarlo a sacar sus mejores cualidades.",
+           "Susy es una profe muy dedicada, tanto que consigue vestuarios a pesar de las dificultades."],
+   grow:"Ajustar la puntualidad en el paso de semillero a grupo representativo y ordenar los momentos del ensayo. También piden más acompañamiento directo de la maestra en el montaje de bachata.",
+   growQuote:"Identificar en qué momento es mejor hablar, ensayar y cuadrar los últimos detalles.",
+   asks:["Más tiempo para el grupo representativo","Separar salsa y bachata, o crear niveles","Un parlante con Bluetooth y una pérgola que no se inunde"]},
+
+  {id:"reyes",area:"Danza",name:"Alexandra Reyes",group:"Ancestros · Danza Folclórica",color:"#00205B",
+   s:{puntualidad:4.38,comunicacion:4.25,relaciones:4.62,liderazgo:4.56,exigencia:4.75,conocimientos:4.94,metodologia:4.56,servicio:4.69,satExp:4.44,satMaestro:4.56},
+   tags:["Investigadora","Gran conocimiento","Cuida de lesiones","Referente del folclor"],
+   quotes:["Sentarse a escucharla hablar de folclor es muy nutritivo y enriquecedor. Tenerla en la universidad es un valor agregado.",
+           "Podemos aprender no solo a bailar, sino también el porqué de los pasos, el vestuario y la forma de ejecución."],
+   grow:"El grupo vive una transición entre integrantes veteranos y nuevos. Piden repartir más las oportunidades, acompañar a quienes empiezan y fortalecer la comunicación para integrar al grupo.",
+   growQuote:"Su liderazgo puede ser fundamental para orientar este proceso y favorecer una mayor integración entre quienes tienen trayectorias distintas.",
+   asks:["Más horas de ensayo","Sumar otras regiones al repertorio, como Nariño, los Llanos o Tolima","Un salón que no se inunde y mejor dotación"]},
+
+  {id:"martinez",area:"Teatro",name:"Simón Martínez",group:"Teatro",color:"#1D4E9E",
+   s:{puntualidad:5.00,comunicacion:5.00,relaciones:5.00,liderazgo:5.00,exigencia:4.50,conocimientos:5.00,metodologia:5.00,servicio:5.00,satExp:5.00,satMaestro:5.00},
+   tags:["Organizado","Creativo","Humano","Dinámico"],
+   quotes:["Es muy humano, entiende las situaciones que se presentan y es muy dinámico con el grupo.",
+           "Muy organizado, creativo y atento."],
+   grow:"Dar estabilidad al horario: se mencionan sesiones canceladas y se piden más opciones de día para poder asistir.",
+   growQuote:"",
+   asks:["Más opciones de horario","Ensayar en un espacio más amplio, como un auditorio"]},
+
+  {id:"alean",area:"Música",name:"Juan Alean",group:"Coro",color:"#00205B",
+   s:{puntualidad:4.90,comunicacion:5.00,relaciones:5.00,liderazgo:5.00,exigencia:4.80,conocimientos:5.00,metodologia:4.90,servicio:5.00,satExp:4.80,satMaestro:5.00},
+   tags:["Paciencia","Inclusión","Técnica vocal","Empatía"],
+   quotes:["Se preocupa por el progreso de cada uno y porque todos se sientan incluidos. Su calidad técnica en dirección musical es muy buena.",
+           "Su pasión por enseñar y por explicar siempre el significado de las obras y las composiciones."],
+   grow:"Casi no hay señalamientos. La sugerencia es dar más espacio a los integrantes nuevos para que ganen confianza al presentarse.",
+   growQuote:"",
+   asks:["Presentarse en auditorios y ante más público","Una sala más amplia y más atriles"]},
+
+  {id:"villarraga",area:"Música",name:"Andrés Villarraga",group:"Tunas · Femenina y Masculina",color:"#00387B",
+   s:{puntualidad:4.65,comunicacion:4.82,relaciones:4.88,liderazgo:4.65,exigencia:4.59,conocimientos:4.94,metodologia:4.71,servicio:4.82,satExp:4.82,satMaestro:4.88},
+   tags:["Paciente","Gran conocimiento","Acogedor","Organizado"],
+   quotes:["El profe de tuna te hace sentir cómodo desde el día 1.",
+           "Tiene un alto conocimiento del tema, es tranquilo para explicar y siempre está dispuesto a enseñar cosas nuevas."],
+   grow:"Exigencia es el criterio más bajo, seguido de liderazgo y puntualidad. En la Tuna Femenina piden proponer más dinámicas para trabajar las falencias del grupo.",
+   growQuote:"Puede ser más propositivo en sus clases y brindar diferentes dinámicas para fortalecer los aspectos en los que el grupo tiene falencias.",
+   asks:["Una sala propia: la Tuna Femenina ensaya en los comedores, con frío","Revisar el horario de ensayo"]},
+
+  {id:"pinilla",area:"Música",name:"Alexander Pinilla",group:"OSUS · Orquesta Sinfónica",color:"#1D4E9E",
+   s:{puntualidad:5.00,comunicacion:4.78,relaciones:4.67,liderazgo:4.67,exigencia:5.00,conocimientos:4.78,metodologia:4.44,servicio:4.67,satExp:4.67,satMaestro:4.89},
+   tags:["Puntual","Riguroso","Escucha propuestas"],
+   quotes:["El profe siempre trata de que nuestras presentaciones salgan bien y escucha nuestras sugerencias de nuevos temas.",
+           "Puntual, estricto y buen profesor."],
+   grow:"Equilibrar el rigor con más trabajo en equipo y menos presión en el ensayo general.",
+   growQuote:"Que un ensayo sea de orquesta general y el otro seccional, para corregir errores y no sentir tanta presión.",
+   asks:["Más espacio para teoría musical","Reparar o reponer instrumentos y conseguir más atriles"]},
+
+  {id:"sanchez",area:"Música",name:"Jordy Sánchez",group:"Vallenato",color:"#00205B",
+   s:{puntualidad:4.88,comunicacion:4.75,relaciones:4.75,liderazgo:4.38,exigencia:3.88,conocimientos:5.00,metodologia:4.50,servicio:4.75,satExp:4.75,satMaestro:4.88},
+   tags:["Gran oído musical","Divertido","Paciente"],
+   quotes:["Jordy es la persona con la que más he aprendido de mi instrumento.",
+           "Tiene un oído musical espectacular y es muy bueno en todos los instrumentos."],
+   grow:"Más estructura y exigencia: un repertorio definido, límites en la cantidad de temas y ensayos más organizados.",
+   growQuote:"Dejar un repertorio fijo y poner límites o reglas en cuanto a la cantidad de temas que se montan.",
+   asks:["Presentaciones fuera de la universidad","Instrumentos en mejor estado y un salón propio"]},
+
+  {id:"crosby",area:"Música",name:"Julián Crosby",group:"Punto Rock y Puente Rojo",color:"#00387B",
+   s:{puntualidad:4.90,comunicacion:5.00,relaciones:5.00,liderazgo:5.00,exigencia:4.80,conocimientos:5.00,metodologia:5.00,servicio:5.00,satExp:4.90,satMaestro:5.00},
+   tags:["Motivador","Une a la banda","Experto"],
+   quotes:["Comprensivo, líder y nos une como banda.",
+           "Todos sus aportes se notan al momento de ensayar y promueve la mejora de cada uno."],
+   grow:"Sin oportunidades de fondo. Algún comentario pide un poco más de exigencia.",
+   growQuote:"",
+   asks:["Más presentaciones","Mantenimiento de baterías, guitarras, micrófonos y cables"]},
+
+  {id:"rincon",area:"Música",name:"Gustavo Rincón",group:"Fusión y US Band",color:"#1D4E9E",
+   s:{puntualidad:4.83,comunicacion:5.00,relaciones:4.83,liderazgo:4.83,exigencia:4.50,conocimientos:4.83,metodologia:4.67,servicio:5.00,satExp:5.00,satMaestro:5.00},
+   tags:["Disciplina","Respetuoso","Creativo"],
+   quotes:["Buena metodología de aprendizaje, nos exige disciplina, es muy respetuoso y amable con todos.",
+           "Creatividad, frescura y compromiso."],
+   grow:"Más firmeza con los integrantes que no cumplen con el grupo.",
+   growQuote:"",
+   asks:["Renovar los instrumentos, empezando por el bajo"]},
+
+  {id:"torrents",area:"Música",name:"Santiago Torrents",group:"Repercusión y Línea de tambores",color:"#00205B",
+   s:{puntualidad:4.75,comunicacion:5.00,relaciones:5.00,liderazgo:5.00,exigencia:5.00,conocimientos:5.00,metodologia:5.00,servicio:5.00,satExp:5.00,satMaestro:5.00},
+   tags:["Vocación","Experiencia","Excelente músico"],
+   quotes:["Es un docente altamente capacitado y con bastante vocación para la música y para enseñar.",
+           "Muy buenas personas, conocedores, responsables, excelentes músicos."],
+   grow:"Sin oportunidades de mejora señaladas.",
+   growQuote:"",
+   asks:["Más espacios para presentarse","Instrumentos propios para la Línea de tambores y parches nuevos"]}
+];
+
+const fmt = (n,d=2) => n.toFixed(d).replace(".",",");
+const esc = s => s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ini = n => n.split(" ").map(w=>w[0]).slice(0,2).join("").toUpperCase();
+const avatar = t => `<span class="av" style="background:${t.color}" aria-hidden="true">${ini(t.name)}</span>`;
+
+/* Anima barras: el ancho final está en data-w */
+function growBars(root){
+  const els = root.querySelectorAll("[data-w]");
+  if(reduce){ els.forEach(e=>e.style.width=e.dataset.w); return; }
+  requestAnimationFrame(()=>requestAnimationFrame(()=>els.forEach((e,i)=>{ e.style.transitionDelay=(i*0.04)+"s"; e.style.width=e.dataset.w; })));
+}
+/* Conteo de cifras */
+function countUp(root){
+  root.querySelectorAll("[data-count]").forEach(el=>{
+    const end=parseFloat(el.dataset.count), dec=+el.dataset.dec;
+    if(reduce){ el.textContent=fmt(end,dec); return; }
+    const t0=performance.now(), dur=1100;
+    const step=now=>{ const p=Math.min(1,(now-t0)/dur), e=1-Math.pow(1-p,3); el.textContent=fmt(end*e,dec); if(p<1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  });
+}
+
+/* Bienestar */
+const conds = document.getElementById("conds");
+conds.innerHTML = CONDS.map(([l,c])=>{
+  const t=c.e+c.b+c.r+c.m, w=v=>(v/t*100).toFixed(1)+"%";
+  const seg=(v,cl)=> v?`<span class="${cl}" data-w="${w(v)}"></span>`:"";
+  return `<div class="srow"><span>${l}</span><div class="stack" role="img" aria-label="${l}: ${Math.round(c.e/t*100)} % excelente, ${Math.round(c.b/t*100)} % bueno, ${Math.round(c.r/t*100)} % regular, ${Math.round(c.m/t*100)} % malo">${seg(c.e,"c-exc")}${seg(c.b,"c-bue")}${seg(c.r,"c-reg")}${seg(c.m,"c-mal")}</div><span class="pct num">${Math.round((c.e+c.b)/t*100)} %</span></div>`;
+}).join("");
+const canal = document.getElementById("canal");
+const tc = CANAL.reduce((a,[,v])=>a+v,0);
+canal.innerHTML = CANAL.map(([l,v])=>`<div class="hrow"><span>${l}</span><div class="htrack"><span data-w="${(v/tc*100).toFixed(1)}%"></span></div><span class="pct num">${Math.round(v/tc*100)} %</span></div>`).join("");
+
+/* Animar Bienestar cuando entra en pantalla (el contenido ya es legible antes) */
+const bie = document.getElementById("bienestar");
+if("IntersectionObserver" in window && !reduce){
+  const io = new IntersectionObserver(es=>{ if(es.some(e=>e.isIntersecting)){ growBars(bie); io.disconnect(); } },{threshold:.15});
+  io.observe(bie);
+  setTimeout(()=>growBars(bie),4000);
+} else growBars(bie);
+
+/* Tarjetas */
+const grid = document.getElementById("grid");
+let filter = "Todos";
+function drawGrid(){
+  grid.innerHTML = T.filter(t=>filter==="Todos"||t.area===filter).map((t,i)=>`
+    <button class="card fadein" style="animation-delay:${i*0.05}s" type="button" data-id="${t.id}" aria-label="Ver perfil de ${t.name}">
+      <div class="c-top">${avatar(t)}<div><div class="c-name">${t.name}</div><div class="c-group">${t.group}</div></div></div>
+      <div class="c-score"><span class="v num">${fmt(t.s.satMaestro)}</span><span class="l">de 5 en satisfacción</span></div>
+      <div class="chips">${t.tags.slice(0,3).map(x=>`<span class="chip">${x}</span>`).join("")}</div>
+      <span class="c-more">Ver perfil <span aria-hidden="true">→</span></span>
+    </button>`).join("");
+}
+drawGrid();
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{
+  filter=b.dataset.f;
+  document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"));
+  drawGrid();
+}));
+grid.addEventListener("click",e=>{const c=e.target.closest(".card"); if(c) location.hash=c.dataset.id;});
+
+/* Perfil */
+const home=document.getElementById("home"), prof=document.getElementById("profile");
+function rows(s){
+  const vals=CRIT.map(([k])=>s[k]), max=Math.max(...vals), min=Math.min(...vals), flat=max===min;
+  return CRIT.map(([k,l])=>{
+    const v=s[k], st = flat?"":v===min?"low":(v===max && vals.filter(x=>x===max).length<=3)?"top":"";
+    const flag = st==="low"?`<span class="flag low">Foco de mejora</span>`:st==="top"?`<span class="flag top">Fortaleza</span>`:"";
+    return `<div class="row"><span class="lab">${l}${flag}</span><div class="mini"><span class="${st}" data-w="${(v-1)/4*100}%"></span></div><span class="val num">${fmt(v)}</span></div>`;
+  }).join("");
+}
+function comite(id){
+  const c = window.COMITE && window.COMITE[id]; if(!c) return "";
+  return `<section class="com fadein" style="animation-delay:.15s" aria-labelledby="com-h">
+    <div class="com-h"><div><h2 id="com-h">Para discusión del Comité: ${esc(c.title)}</h2><p>${esc(c.intro)}</p></div><span class="badge">Uso interno</span></div>
+    <div class="ask"><b>Lo que se pide al comité:</b> ${esc(c.ask)}</div>
+    <h3 class="sub-h">Situaciones identificadas por la coordinación</h3>
+    <div class="pts">${c.points.map((p,i)=>`
+      <div class="pt">
+        <span class="n">${i+1}</span>
+        <div><h3>${esc(p.t)}</h3><ul class="obs">${p.items.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+      </div>`).join("")}</div>
+    <h3 class="sub-h">Resultados negativos de la encuesta</h3>
+    <p class="sub-p">Criterios en los que su calificación queda por debajo del resto de maestros. Escala de 1 a 5.</p>
+    <div class="negs">${c.neg.map(n=>`
+      <div class="neg"><div class="nm">${esc(n.m)}</div><div class="nv num">${n.v}</div><div class="nr">${esc(n.r)}</div><div class="ng num">${esc(n.g)}</div></div>`).join("")}</div>
+    <p class="sub-p" style="margin-top:16px">${esc(c.negNote)}</p>
+    <div class="nqs">${c.negQuotes.map(q=>`<p class="quote grow">${esc(q)}</p>`).join("")}</div>
+    <h3 class="sub-h">Opciones para la discusión</h3>
+    <div class="opts">${c.options.map(o=>`
+      <div class="opt"><h4>${esc(o.t)}</h4><p>${esc(o.d)}</p>
+        <div class="pr"><b>Cuida</b>${esc(o.pro)}</div><div class="pr"><b>Riesgo</b>${esc(o.risk)}</div></div>`).join("")}</div>
+  </section>`;
+}
+function showProfile(id){
+  const i=T.findIndex(t=>t.id===id); if(i<0){ showHome(); return; }
+  const t=T[i], prev=T[(i-1+T.length)%T.length], next=T[(i+1)%T.length];
+  prof.innerHTML = `
+    <button class="back" type="button" id="back">← Todos los maestros</button>
+    <article class="p-card fadein">
+      <div class="p-head">
+        ${avatar(t)}
+        <div class="p-id"><div class="area">${t.area}</div><h1>${t.name}</h1><div class="grp">${t.group}</div></div>
+        <div class="p-scores">
+          <div class="ps main"><div class="v num"><span data-count="${t.s.satMaestro}" data-dec="2">${fmt(t.s.satMaestro)}</span></div><div class="l">Satisfacción con su maestro</div></div>
+          <div class="ps"><div class="v num"><span data-count="${t.s.satExp}" data-dec="2">${fmt(t.s.satExp)}</span></div><div class="l">Satisfacción con la experiencia</div></div>
+        </div>
+      </div>
+      <div class="p-body">
+        <div>
+          <section class="p-sec">
+            <h2><span class="dot d-pos"></span>Lo que más valoran</h2>
+            <div class="chips" style="margin-bottom:14px">${t.tags.map(x=>`<span class="chip">${x}</span>`).join("")}</div>
+            ${t.quotes.map(q=>`<p class="quote">${esc(q)}</p>`).join("")}
+          </section>
+          <section class="p-sec">
+            <h2><span class="dot d-opp"></span>Para seguir creciendo</h2>
+            <p>${esc(t.grow)}</p>
+            ${t.growQuote?`<p class="quote grow">${esc(t.growQuote)}</p>`:""}
+          </section>
+          ${t.asks.length?`<section class="p-sec"><h2><span class="dot d-inf"></span>Lo que piden para el grupo</h2><ul class="asks">${t.asks.map(a=>`<li>${esc(a)}</li>`).join("")}</ul></section>`:""}
+        </div>
+        <section class="p-sec">
+          <h2>Calificación por criterio</h2>
+          <div class="rows">${rows(t.s)}</div>
+          <div class="scale">Promedio de las respuestas, en una escala de 1 a 5.</div>
+        </section>
+      </div>
+    </article>
+    ${comite(t.id)}
+    <nav class="pn" aria-label="Otros perfiles">
+      <button type="button" data-go="${prev.id}"><span>Anterior</span>← ${prev.name}</button>
+      <button type="button" class="next" data-go="${next.id}"><span>Siguiente</span>${next.name} →</button>
+    </nav>`;
+  home.hidden=true; prof.hidden=false;
+  document.getElementById("back").addEventListener("click",()=>{ location.hash="perfiles"; });
+  prof.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>{ location.hash=b.dataset.go; }));
+  window.scrollTo({top:0,behavior:"auto"});
+  growBars(prof); countUp(prof);
+}
+function showHome(section){
+  const wasHidden = home.hidden;
+  prof.hidden=true; home.hidden=false;
+  if(wasHidden) drawGrid();
+  const el = section && document.getElementById(section);
+  if(el) el.scrollIntoView({behavior: wasHidden||reduce ? "auto" : "smooth"}); else if(wasHidden) window.scrollTo(0,0);
+}
+function route(){
+  const id=location.hash.slice(1);
+  if(T.some(t=>t.id===id)) showProfile(id); else showHome(id);
+}
+window.addEventListener("hashchange",route);
+route();
+countUp(home);
+</script>
+</body>
+</html>
