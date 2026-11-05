@@ -113,7 +113,7 @@ button{font:inherit;color:inherit}
 .note{font-size:.85rem;color:var(--muted);margin:12px 0 0}
 
 /* Perfil */
-#profile[hidden],#home[hidden]{display:none}
+#profile[hidden],#home[hidden],#compare[hidden]{display:none}
 .back{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-weight:600;color:var(--blue);font-size:.95rem;margin:32px 0 18px}
 .back:hover{text-decoration:underline}
 .p-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden}
@@ -177,6 +177,7 @@ button{font:inherit;color:inherit}
 .neg .nv{font-size:1.8rem;font-weight:700;color:var(--amber);line-height:1.1;margin:4px 0}
 .neg .nr{font-size:.85rem;font-weight:600;color:var(--ink)}
 .neg .ng{font-size:.78rem;color:var(--muted)}
+.neg .np{font-size:.78rem;color:var(--ink);font-weight:600;margin-top:2px}
 .nqs{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
 .pt .n{width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:700;font-size:.9rem}
 .pt h3{font-size:1rem;font-weight:700;margin-bottom:6px}
@@ -192,6 +193,51 @@ button{font:inherit;color:inherit}
 .opt .pr{font-size:.85rem}
 .opt .pr b{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .sub-h{font-size:1.05rem;font-weight:700;margin-top:26px}
+
+/* Comparación */
+.cmp-hero{padding:44px 0 6px}
+.cmp-hero h1{font-family:var(--display);font-size:clamp(1.9rem,4vw,2.6rem);color:var(--navy);margin:.25em 0 .35em}
+.cmp-hero p{margin:0;color:var(--muted);max-width:62ch;font-size:1.05rem}
+.verdict{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:26px}
+.vt{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.vt .l{font-size:.85rem;color:var(--muted);line-height:1.3}
+.vt .ft{display:flex;align-items:baseline;gap:8px;margin-top:8px;flex-wrap:wrap}
+.vt .a{font-size:1rem;color:var(--muted);font-weight:600}
+.vt .b{font-size:1.9rem;font-weight:700;color:var(--navy);line-height:1}
+.delta{display:inline-block;font-size:.78rem;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.delta.up{background:rgba(21,128,61,.12);color:#15803D}
+.delta.down{background:rgba(185,28,28,.1);color:var(--red)}
+.delta.eq{background:var(--soft);color:var(--muted)}
+.dumb{display:flex;flex-direction:column;gap:12px}
+.dr{display:grid;grid-template-columns:minmax(130px,210px) 1fr 160px;gap:14px;align-items:center;font-size:.92rem}
+.dtrack{position:relative;height:22px}
+.dtrack::before{content:"";position:absolute;left:0;right:0;top:50%;height:2px;background:var(--soft);transform:translateY(-50%)}
+.dline{position:absolute;top:50%;height:4px;transform:translateY(-50%);border-radius:2px;background:#9DB3D6}
+.dline.down{background:rgba(185,28,28,.35)}
+.dot1,.dot2{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;transform:translate(-50%,-50%);transition:left .9s cubic-bezier(.2,.7,.2,1)}
+.dot1{background:var(--surface);border:3px solid #9AA6BC}
+.dot2{background:var(--navy);border:3px solid var(--navy)}
+.dr .vals{display:flex;align-items:center;gap:8px;justify-content:flex-end;white-space:nowrap;font-variant-numeric:tabular-nums}
+.dr .vals span.n{font-weight:700}
+.dscale{display:grid;grid-template-columns:minmax(130px,210px) 1fr 160px;gap:14px;font-size:.72rem;color:var(--muted);margin-top:4px}
+.dscale .ticks{display:flex;justify-content:space-between}
+.dlegend{display:flex;gap:16px;font-size:.8rem;color:var(--muted);margin-bottom:14px;flex-wrap:wrap}
+.dlegend i{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:-2px;margin-right:6px}
+.dlegend .i1{background:var(--surface);border:3px solid #9AA6BC}
+.dlegend .i2{background:var(--navy)}
+.tbl-wrap{overflow-x:auto}
+table.cmp{width:100%;border-collapse:collapse;font-size:.92rem;font-variant-numeric:tabular-nums}
+table.cmp th{text-align:left;font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+table.cmp td{padding:12px;border-bottom:1px solid var(--line);vertical-align:middle;white-space:nowrap}
+table.cmp td .w{font-weight:600;white-space:normal}
+table.cmp td .g{font-size:.8rem;color:var(--muted);white-space:normal}
+table.cmp td .pair{color:var(--muted)}
+table.cmp td .pair b{color:var(--ink)}
+table.cmp tr:last-child td{border-bottom:0}
+.caveat{font-size:.85rem;color:var(--muted);background:var(--soft);border-radius:12px;padding:12px 14px;margin-top:14px}
+.takeaways{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:860px){.verdict{grid-template-columns:1fr 1fr}.takeaways{grid-template-columns:1fr}}
+@media (max-width:560px){.dr,.dscale{grid-template-columns:96px 1fr 132px;gap:8px}.dr .vals{font-size:.82rem}}
 
 footer{margin:56px 0 32px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
@@ -227,7 +273,7 @@ footer{margin:56px 0 32px;padding-top:18px;border-top:1px solid var(--line);colo
 </head>
 <body>
 
-<div class="top"><div class="wrap"><b>Universidad de La Sabana</b><nav aria-label="Secciones"><a href="#perfiles">Maestros</a><a href="#bienestar">Bienestar</a></nav></div></div>
+<div class="top"><div class="wrap"><b>Universidad de La Sabana</b><nav aria-label="Secciones"><a href="#perfiles">Maestros</a><a href="#bienestar">Bienestar</a><a href="#comparacion">2026-1 vs 2026-2</a></nav></div></div>
 
 <main class="wrap">
   <div id="home">
@@ -363,6 +409,7 @@ footer{margin:56px 0 32px;padding-top:18px;border-top:1px solid var(--line);colo
   </div>
 
   <div id="profile" hidden></div>
+  <div id="compare" hidden></div>
 
   <footer>
     <span>Dirección de Bienestar y Experiencia del Estudiante · Jefatura de Desarrollo Cultural</span>
@@ -398,12 +445,12 @@ window.COMITE = {
         "El grupo es muy apegado a él: cualquier decisión puede tener un fuerte impacto en los integrantes."]}
     ],
     neg: [
-      {m:"Puntualidad", v:"3,61", r:"La más baja de toda la encuesta", g:"Promedio general: 4,48"},
-      {m:"Metodología de ensayo", v:"4,35", r:"La más baja entre los maestros", g:"Promedio general: 4,67"},
-      {m:"Conocimientos", v:"4,57", r:"La más baja entre los maestros", g:"Promedio general: 4,86"},
-      {m:"Comunicación asertiva", v:"4,43", r:"La segunda más baja", g:"Promedio general: 4,73"},
-      {m:"Satisfacción con el maestro", v:"4,74", r:"La segunda más baja", g:"Promedio general: 4,84"},
-      {m:"Liderazgo", v:"4,61", r:"La tercera más baja", g:"Promedio general: 4,74"}
+      {m:"Puntualidad", p:"4,18", v:"3,61", r:"La más baja de toda la encuesta", g:"Promedio general: 4,48"},
+      {m:"Metodología de ensayo", p:"4,71", v:"4,35", r:"La más baja entre los maestros", g:"Promedio general: 4,67"},
+      {m:"Conocimientos", p:"4,71", v:"4,57", r:"La más baja entre los maestros", g:"Promedio general: 4,86"},
+      {m:"Comunicación asertiva", p:"4,88", v:"4,43", r:"La segunda más baja", g:"Promedio general: 4,73"},
+      {m:"Satisfacción con el maestro", p:"4,71", v:"4,74", r:"La segunda más baja", g:"Promedio general: 4,84"},
+      {m:"Liderazgo", p:"4,88", v:"4,61", r:"La tercera más baja", g:"Promedio general: 4,74"}
     ],
     negNote: "Cerca de siete comentarios mencionan la puntualidad o el manejo del tiempo. Otros piden más organización, mejor comunicación y trato igualitario.",
     negQuotes: [
@@ -627,9 +674,9 @@ function comite(id){
         <div><h3>${esc(p.t)}</h3><ul class="obs">${p.items.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
       </div>`).join("")}</div>
     <h3 class="sub-h">Resultados negativos de la encuesta</h3>
-    <p class="sub-p">Criterios en los que su calificación queda por debajo del resto de maestros. Escala de 1 a 5.</p>
+    <p class="sub-p">Criterios en los que su calificación queda por debajo del resto de maestros, con su valor en 2026-1. Todos bajaron frente al semestre anterior, salvo la satisfacción general. Escala de 1 a 5.</p>
     <div class="negs">${c.neg.map(n=>`
-      <div class="neg"><div class="nm">${esc(n.m)}</div><div class="nv num">${n.v}</div><div class="nr">${esc(n.r)}</div><div class="ng num">${esc(n.g)}</div></div>`).join("")}</div>
+      <div class="neg"><div class="nm">${esc(n.m)}</div><div class="nv num">${n.v}</div><div class="nr">${esc(n.r)}</div><div class="ng num">${esc(n.g)}</div><div class="np num">En 2026-1: ${n.p}</div></div>`).join("")}</div>
     <p class="sub-p" style="margin-top:16px">${esc(c.negNote)}</p>
     <div class="nqs">${c.negQuotes.map(q=>`<p class="quote grow">${esc(q)}</p>`).join("")}</div>
     <h3 class="sub-h">Opciones para la discusión</h3>
@@ -678,22 +725,129 @@ function showProfile(id){
       <button type="button" data-go="${prev.id}"><span>Anterior</span>← ${prev.name}</button>
       <button type="button" class="next" data-go="${next.id}"><span>Siguiente</span>${next.name} →</button>
     </nav>`;
-  home.hidden=true; prof.hidden=false;
+  home.hidden=true; cmpEl.hidden=true; prof.hidden=false;
   document.getElementById("back").addEventListener("click",()=>{ location.hash="perfiles"; });
   prof.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>{ location.hash=b.dataset.go; }));
   window.scrollTo({top:0,behavior:"auto"});
   growBars(prof); countUp(prof);
 }
+/* Comparación 2026-1 vs 2026-2 */
+const CMP = {
+  crit:{puntualidad:[4.65,4.48],comunicacion:[4.85,4.73],relaciones:[4.90,4.84],liderazgo:[4.85,4.74],exigencia:[4.76,4.71],conocimientos:[4.85,4.86],metodologia:[4.72,4.67],servicio:[4.94,4.86]},
+  t:{torrents:{satM:[5.00,5.00],crit:[5.00,4.97],punt:[5.00,4.75]},crosby:{satM:[4.91,5.00],crit:[5.00,4.96],punt:[5.00,4.90]},
+     alean:{satM:[5.00,5.00],crit:[5.00,4.95],punt:[5.00,4.90]},sanchez:{satM:[4.79,4.88],crit:[4.86,4.61],punt:[4.84,4.88]},
+     reyes:{satM:[4.76,4.56],crit:[4.86,4.59],punt:[4.71,4.38]},gomez:{satM:[4.71,4.74],crit:[4.76,4.48],punt:[4.18,3.61]},
+     osorio:{satM:[4.50,4.88],crit:[4.75,4.89],punt:[4.33,4.41]},rincon:{satM:[4.71,5.00],crit:[4.90,4.81],punt:[4.86,4.83]},
+     villarraga:{satM:[4.43,4.88],crit:[4.71,4.76],punt:[4.71,4.65]},pinilla:{satM:[4.27,4.89],crit:[4.85,4.75],punt:[5.00,5.00]},
+     martinez:{satM:[4.56,5.00],crit:[4.39,4.94],punt:[3.89,5.00]}},
+  bien:[["Acompañamiento en salidas",74,98],["Atención del equipo de Bienestar",85,92],["Instalaciones y salas de ensayo",69,81],["Implementos e instrumentos",62,80],["Dotación (uniformes y distintivos)",66,61]],
+  canal:[["Instagram",31,57],["WhatsApp",43,24],["Correo",27,18]]
+};
+function delta(a,b,dec=2,suf=""){
+  const d=+(b-a).toFixed(dec), cls = Math.abs(d) < (dec?0.03:1) ? "eq" : d>0 ? "up" : "down";
+  const txt = cls==="eq" ? "Igual" : (d>0?"+":"−")+fmt(Math.abs(d),dec)+suf;
+  return `<span class="delta ${cls}">${txt}</span>`;
+}
+function dumbRows(items,min,max,dec,suf){
+  const pos=v=>((v-min)/(max-min)*100).toFixed(2)+"%";
+  return items.map(([l,a,b])=>{
+    const lo=Math.min(a,b), hi=Math.max(a,b), down=b<a;
+    return `<div class="dr"><span>${l}</span>
+      <div class="dtrack" role="img" aria-label="${l}: ${fmt(a,dec)}${suf} en 2026-1, ${fmt(b,dec)}${suf} en 2026-2">
+        <span class="dline ${down?"down":""}" data-l="${pos(lo)}" data-wd="${((hi-lo)/(max-min)*100).toFixed(2)}%"></span>
+        <span class="dot1" style="left:${pos(a)}"></span><span class="dot2" data-left="${pos(b)}" style="left:${pos(a)}"></span>
+      </div>
+      <span class="vals"><span class="pair num">${fmt(a,dec)} → <span class="n">${fmt(b,dec)}${suf}</span></span>${delta(a,b,dec,dec?"":" pts")}</span></div>`;
+  }).join("");
+}
+function scale(ticks){ return `<div class="dscale"><span></span><div class="ticks num">${ticks.map(t=>`<span>${t}</span>`).join("")}</div><span></span></div>`; }
+function animateDumbs(root){
+  const lines=root.querySelectorAll(".dline"), dots=root.querySelectorAll(".dot2");
+  lines.forEach(l=>{ l.style.left=l.dataset.l; l.style.width=reduce?l.dataset.wd:"0"; });
+  const go=()=>{ dots.forEach(d=>d.style.left=d.dataset.left); lines.forEach(l=>{ l.style.transition=reduce?"none":"width .9s cubic-bezier(.2,.7,.2,1)"; l.style.width=l.dataset.wd; }); };
+  if(reduce){ dots.forEach(d=>{d.style.transition="none"}); go(); } else requestAnimationFrame(()=>requestAnimationFrame(go));
+}
+const cmpEl=document.getElementById("compare");
+function showCompare(){
+  const crit = CRIT.map(([k,l])=>[l,CMP.crit[k][0],CMP.crit[k][1]]);
+  const rowsT = T.map(t=>({t,c:CMP.t[t.id]})).sort((x,y)=>(y.c.satM[1]-y.c.satM[0])-(x.c.satM[1]-x.c.satM[0]));
+  const pair=(a,b)=>`<span class="pair">${fmt(a)} → <b>${fmt(b)}</b></span> ${delta(a,b)}`;
+  cmpEl.innerHTML = `
+    <header class="cmp-hero">
+      <div class="kicker">Comparación entre semestres · Grupos Representativos</div>
+      <h1>2026-1 frente a 2026-2: ¿hemos mejorado?</h1>
+      <p>Sí, en lo más importante. La satisfacción con los maestros y con la experiencia en los grupos subió, y cuatro de los cinco aspectos de Bienestar mejoraron. La puntualidad de los maestros y la dotación de uniformes retrocedieron.</p>
+      <div class="verdict">
+        <div class="vt rise"><div class="l">Satisfacción con su maestro</div><div class="ft"><span class="a num">4,67 →</span><span class="b num">4,84</span>${delta(4.67,4.84)}</div></div>
+        <div class="vt rise" style="animation-delay:.08s"><div class="l">Satisfacción con la experiencia en el grupo</div><div class="ft"><span class="a num">4,40 →</span><span class="b num">4,77</span>${delta(4.40,4.77)}</div></div>
+        <div class="vt rise" style="animation-delay:.16s"><div class="l">Le dio la calificación máxima a su maestro</div><div class="ft"><span class="a num">75 % →</span><span class="b num">86 %</span>${delta(75,86,0," pts")}</div></div>
+        <div class="vt rise" style="animation-delay:.24s"><div class="l">Aspectos de Bienestar que mejoraron</div><div class="ft"><span class="b num">4 de 5</span><span class="delta down">Dotación baja</span></div></div>
+      </div>
+    </header>
+
+    <section class="block" aria-labelledby="c1">
+      <h2 id="c1">Los maestros, criterio por criterio</h2>
+      <p class="lead">Promedio de todos los grupos. Los estudiantes están más satisfechos, pero califican cada criterio un poco más bajo que el semestre pasado. La mayor caída está en puntualidad.</p>
+      <div class="panel">
+        <div class="dlegend"><span><i class="i1"></i>2026-1</span><span><i class="i2"></i>2026-2</span></div>
+        <div class="dumb" id="dumbCrit">${dumbRows(crit,4.4,5,2,"")}</div>
+        ${scale(["4,4","4,6","4,8","5,0"])}
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="c2">
+      <h2 id="c2">Bienestar: ¿mejoramos?</h2>
+      <p class="lead">Porcentaje de estudiantes que calificó cada aspecto de forma favorable.</p>
+      <div class="panel">
+        <div class="dlegend"><span><i class="i1"></i>2026-1</span><span><i class="i2"></i>2026-2</span></div>
+        <div class="dumb">${dumbRows(CMP.bien,50,100,0," %")}</div>
+        ${scale(["50 %","75 %","100 %"])}
+        <div class="caveat">La pregunta cambió de escala: en 2026-1 era de 1 a 5 (aquí, favorable es 4 o 5) y en 2026-2 es Excelente, Bueno, Regular o Malo (favorable es excelente o bueno). La comparación es aproximada, pero la dirección se mantiene con cualquier lectura: mejoran salidas, atención, instalaciones e implementos, y empeora la dotación.</div>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="c3">
+      <h2 id="c3">Cada maestro frente al semestre anterior</h2>
+      <p class="lead">Ordenados de mayor a menor cambio en la satisfacción con el maestro. Escala de 1 a 5.</p>
+      <div class="panel tbl-wrap">
+        <table class="cmp">
+          <thead><tr><th>Maestro</th><th>Satisfacción con el maestro</th><th>Promedio de los 8 criterios</th><th>Puntualidad</th></tr></thead>
+          <tbody>${rowsT.map(({t,c})=>`<tr><td><div class="w">${t.name}</div><div class="g">${t.group}</div></td><td>${pair(c.satM[0],c.satM[1])}</td><td>${pair(c.crit[0],c.crit[1])}</td><td>${pair(c.punt[0],c.punt[1])}</td></tr>`).join("")}</tbody>
+        </table>
+        <div class="caveat">Comparación por grupo. En 2026-1 la Tuna Masculina figuraba con otro director; Jordy Sánchez incluye Entre Mares y Parranda en 2026-1 y Vallenato en 2026-2; Santiago Torrents incluye la Línea de tambores en 2026-2.</div>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="c4">
+      <h2 id="c4">Lo que nos dice la comparación</h2>
+      <div class="takeaways">
+        <div class="sum"><h3><span class="dot" style="background:#15803D"></span>Mejoramos</h3><ul>
+          <li><b>Experiencia en el grupo:</b> la calificación de 5 pasó de 57 % a 79 %.</li>
+          <li><b>Salidas representativas:</b> de 74 % a 98 % de valoración favorable.</li>
+          <li><b>Mayores avances:</b> Simón Martínez, Alexander Pinilla, las Tunas y Susana Osorio.</li></ul></div>
+        <div class="sum"><h3><span class="dot d-crit"></span>Retrocedemos</h3><ul>
+          <li><b>Dotación:</b> es el único aspecto de Bienestar que empeora.</li>
+          <li><b>Puntualidad:</b> baja en el conjunto, con la caída más fuerte en Génesis (4,18 → 3,61).</li>
+          <li><b>Ancestros:</b> baja en satisfacción y en el promedio de sus criterios, en medio de su transición de integrantes.</li></ul></div>
+        <div class="sum"><h3><span class="dot d-inf"></span>Para tener en cuenta</h3><ul>
+          <li><b>Comunicación:</b> Instagram pasó de 31 % a 57 % como canal preferido; WhatsApp bajó de 43 % a 24 %.</li>
+          <li><b>Encuesta:</b> estandarizar la escala de Bienestar para comparar con exactitud el próximo semestre.</li></ul></div>
+      </div>
+    </section>`;
+  home.hidden=true; prof.hidden=true; cmpEl.hidden=false;
+  window.scrollTo({top:0,behavior:"auto"});
+  animateDumbs(cmpEl);
+}
 function showHome(section){
   const wasHidden = home.hidden;
-  prof.hidden=true; home.hidden=false;
+  prof.hidden=true; cmpEl.hidden=true; home.hidden=false;
   if(wasHidden) drawGrid();
   const el = section && document.getElementById(section);
   if(el) el.scrollIntoView({behavior: wasHidden||reduce ? "auto" : "smooth"}); else if(wasHidden) window.scrollTo(0,0);
 }
 function route(){
   const id=location.hash.slice(1);
-  if(T.some(t=>t.id===id)) showProfile(id); else showHome(id);
+  if(id==="comparacion") showCompare(); else if(T.some(t=>t.id===id)) showProfile(id); else showHome(id);
 }
 window.addEventListener("hashchange",route);
 route();
